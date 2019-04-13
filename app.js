@@ -4,7 +4,6 @@ path = require('path'),
 cookieParser = require('cookie-parser'),
 logger = require('morgan'),
 indexRouter = require('./routes/index'),
-usersRouter = require('./routes/users'),
 postRouter = require('./routes/post'),
 reviewRouter = require('./routes/reviews'),
 app = express();
@@ -20,7 +19,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/posts', postRouter);
 app.use('/posts/:id/reviews', reviewRouter);
 
