@@ -1,5 +1,9 @@
 const express = require('express'),
-router = express.Router();
+router = express.Router(),
+ { postRegister } = require('../controllers/index'); //this links the controllers/index.js file to this route file
+                                                      // any method from the controller file that is to be used here must be named inside of the { nameOfMethod }
+
+
 
   //routes for : '/'
 
@@ -14,9 +18,7 @@ router.get('/register', (req, res, next) => {
 });
 
 /* POST register. */
-router.post('/register', (req, res, next) => {
-  res.send('POST register');
-});
+router.post('/register', postRegister);
 
 /* GET login. */
 router.get('/login', (req, res, next) => {
