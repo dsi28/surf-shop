@@ -2,7 +2,7 @@ const express = require('express'),
 router = express.Router(),
 passport = require('passport'),
  { errorHandler } = require('../middleware'),
- { postRegister } = require('../controllers/index'); //this links the controllers/index.js file to this route file
+ { postRegister, postLogin, getLogout } = require('../controllers/index'); //this links the controllers/index.js file to this route file
                                                       // any method from the controller file that is to be used here must be named inside of the { nameOfMethod }
 
 
@@ -28,15 +28,10 @@ router.get('/login', (req, res, next) => {
 });
 
 /* POST login. */
-router.post('/login', passport.authenticate('local', 
-{successRedirect: '/',
-failureRedirect: '/login'}));
+router.post('/login', postLogin);
 
 /* GET logout. */
-router.get('/logout', (req,res,next)=>{
-  req.logout();
-  res.redirect('/');
-});
+router.get('/logout', getLogout);
 
 /* GET profile. */
 router.get('/profile', (req, res, next) => {
