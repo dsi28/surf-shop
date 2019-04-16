@@ -1,0 +1,21 @@
+<h1>New Posts</h1>
+
+<form action='/posts' method='POST'>
+    <div>
+        <label for='title'></label>
+        <input type='text' name='post[title]' id='title' placeholder='Title'>
+    </div>
+    <div>
+        <label for='price'></label>
+        <input type='text' name='post[price]' id='price' placeholder='Price'>
+    </div>
+    <div>
+        <label for='desc'></label>
+        <textarea type='text' name='post[desc]' id='desc' placeholder='Description'></textarea>
+    </div>
+    <div>
+        <label for='loc'></label>
+        <input type='text' name='post[location]' id='loc' placeholder='Location'>
+    </div>
+    <input type='submit' value='submit'>
+</form>

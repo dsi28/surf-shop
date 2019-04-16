@@ -1,0 +1,19 @@
+<form action='/posts/<%=post.id%>?_method=PUT' method='POST'>
+    <div>
+        <label for='title'></label>
+        <input type='text' name='title' id='post[title]' value='<%=post.title%>'>
+    </div>
+    <div>
+        <label for='price'></label>
+        <input type='text' name='post[price]' id='price' value='<%=post.price%>'>
+    </div>
+    <div>
+        <label for='desc'></label>
+        <textarea type='text' name='post[desc]' id='desc'><%=post.desc%></textarea>
+    </div>
+    <div>
+        <label for='loc'></label>
+        <input type='text' name='post[location]' id='loc' value='<%=post.location%>'>
+    </div>
+    <input type='submit' value='submit'>
+</form>

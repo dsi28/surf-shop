@@ -1,7 +1,6 @@
 const express = require('express'),
 router = express.Router(),
-passport = require('passport'),
- { errorHandler } = require('../middleware'),
+ { asyncErrorHandler } = require('../middleware'),
  { postRegister, postLogin, getLogout } = require('../controllers/index'); //this links the controllers/index.js file to this route file
                                                       // any method from the controller file that is to be used here must be named inside of the { nameOfMethod }
 
@@ -20,7 +19,7 @@ router.get('/register', (req, res, next) => {
 });
 
 /* POST register. */
-router.post('/register', errorHandler(postRegister));
+router.post('/register', asyncErrorHandler(postRegister));
 
 /* GET login. */
 router.get('/login', (req, res, next) => {

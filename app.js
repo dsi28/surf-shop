@@ -4,6 +4,7 @@ path = require('path'),
 cookieParser = require('cookie-parser'),
 logger = require('morgan'),
 mongoose = require('mongoose'),
+methodOverride = require('method-override'),
 //routes
 indexRouter = require('./routes/index'),
 postRouter = require('./routes/post'),
@@ -31,9 +32,10 @@ app.set('view engine', 'ejs');
 //app config
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true })); // in order to use objects in form names set this value to true. ex) post[title] req.body.post
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
 //express-session config  MUST BE BEFORE PASSPORT! AFTER APP CONFIG!
 app.use(session({

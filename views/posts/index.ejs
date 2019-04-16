@@ -1,0 +1,9 @@
+<h1>Post Index</h1>
+<%posts.forEach((post)=>{%>
+    <h1><%=post.title%></h1>
+    <p><%=post.desc%></p>
+    <p><%=post.price%></p>
+    <p><%=post.location%></p>
+    <a href='/posts/<%=post.id%>'>show<a>
+    <hr>
+<%})%>
