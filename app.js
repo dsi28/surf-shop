@@ -43,6 +43,9 @@ app.use(session({
 }));
 
 //passport   AFTER APP CONFIG  BEFORE SET ROUTES!
+  //intialize and session must be after express session config
+app.use(passport.initialize());
+app.use(passport.session());
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
