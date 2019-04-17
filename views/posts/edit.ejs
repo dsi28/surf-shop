@@ -1,4 +1,4 @@
-<form action='/posts/<%=post.id%>?_method=PUT' method='POST'>
+<form action='/posts/<%=post.id%>?_method=PUT' method='POST' id='postEditForm'>
     <div>
         <label for='title'></label>
         <input type='text' name='title' id='post[title]' value='<%=post.title%>'>
@@ -6,6 +6,17 @@
     <div>
         <label for='price'></label>
         <input type='text' name='post[price]' id='price' value='<%=post.price%>'>
+    </div>
+    <div>
+        <label for='images'>Image</label>
+        <input type='file' accept='images/*' name='images' id='imageUpload' multiple>
+        <div>
+        <%post.images.forEach((image, i)=>{%>
+            <img src='<%=image.url%>' width='100px'>
+            <label for='image<%=i%>'>Delete</label>
+            <input type='checkbox' id='image<%=i%>' name='deleteImage' class='imageDeleteCheckbox' value='<%=image.url%>'>
+        <%})%>
+        </div>
     </div>
     <div>
         <label for='desc'></label>
@@ -17,3 +28,25 @@
     </div>
     <input type='submit' value='submit'>
 </form>
+
+<script>
+    //find form
+    let postEditForm = document.getElementById('postEditForm');
+        //add submit listener to the post edit form
+        postEditForm.addEventListener('submit', function(event){
+            //find length of uploaded images
+            let imageUpload = document.getElementById('imageUpload').files.length;
+            //current lenghth of uploaded images
+            let existingImgs = document.querySelectorAll('.imageDeleteCheckbox').length;
+            //length of images to be deleted
+            let imgDeletions = document.querySelectorAll('.imageDeleteCheckbox:checked').length;
+            let newTotal  = existingImgs - imgDeletions +imageUpload;
+            alert(newTotal);
+            if(newTotal >4){
+                event.preventDefault();
+                let showTotal = newTotal-4;
+                alert(`You need to remove atleast ${showTotal} image${showTotal == 1 ? '': 's'}`);
+            }
+        });
+
+</script>
