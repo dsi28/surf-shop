@@ -2,6 +2,11 @@
 <h1><%=post.desc%></h1>
 <h1><%=post.price%></h1>
 <h1><%=post.location%></h1>
+<div>
+<%post.images.forEach((image)=>{%>
+    <img src='<%=image.url%>' width='200px'>
+<%})%>
+</div>
 <div><a href='/posts/<%=post.id%>/edit'>Edit post</a></div>
 <div>
 <form method='POST' action='/posts/<%=post.id%>?_method=DELETE'>

@@ -1,4 +1,10 @@
-const Post = require('../models/post');
+const Post = require('../models/post'),
+cloudinary = require('cloudinary');
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUDNAME,
+    api_key: process.env.CLOUDINARY_APIKEY,
+    api_secret: process.env.CLOUDINARY_SECRET
+});
 
 module.exports =  {
     
@@ -13,8 +19,16 @@ module.exports =  {
         res.render('posts/new');
     },
 
-    //Posts create
+    //Posts create  //since upload middleware is in the routes/post/create route uploaded files can be handeled here with req.files (array)
     async postCreate (req,res,next){
+        req.body.post.images=[];
+        for (const file of req.files) {
+            let image = await cloudinary.v2.uploader.upload(file.path);
+            req.body.post.images.push({
+                url: image.secure_url,
+                public_id: image.public_id
+            });
+        }
         let post = await Post.create(req.body.post);
         res.redirect(`/posts/${post.id}`);
     },

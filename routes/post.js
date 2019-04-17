@@ -1,5 +1,7 @@
 const express = require('express'),
 router = express.Router(),
+multer = require('multer'),
+upload = multer({'dest': 'uploads/'}),
  {asyncErrorHandler} = require('../middleware'),
  {
     postIndex, 
@@ -19,10 +21,10 @@ router.get('/', asyncErrorHandler(postIndex));
 /* GET posts new. */
 router.get('/new', postNew);
 
-/* POST posts create. */
-router.post('/', asyncErrorHandler(postCreate));
+/* POST posts create. *///images is the type of file and 4 is the max number of file uploads
+router.post('/', upload.array('images', 4), asyncErrorHandler(postCreate));
 
-/* GET posts show. */
+/* GET posts show. */ 
 router.get('/:id', asyncErrorHandler(postShow));
 
 /* GET posts edit. */
