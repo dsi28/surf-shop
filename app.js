@@ -19,7 +19,7 @@ session = require('express-session'),
 app = express();
 
 //db conncetion
-mongoose.connect('mongodb://localhost/surf-shop', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost/surf-shop-mapbox', { useNewUrlParser: true }); //changed db url from surf-shop to surf-shop-mapbox while in mapbox branch
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', ()=>{
@@ -29,7 +29,8 @@ db.once('open', ()=>{
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
+//set up public assets directory
+app.use(express.static('public'));
 //app config
 app.use(logger('dev'));
 app.use(express.json());
