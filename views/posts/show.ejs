@@ -36,6 +36,7 @@
 <div>Price: <%= post.price %></div>
 <div><%= post.description %></div>
 <div><%= post.location %></div>
+<div><%= post.coordinates %></div>
 <div>
 	<% post.images.forEach(function(image) { %>
 	<img src="<%= image.url %>" alt="Surf board image" width="200px">
@@ -54,55 +55,39 @@
 </div>
 
 <script>
-
+let post = <%-JSON.stringify(post)%>;
 mapboxgl.accessToken = 'pk.eyJ1IjoiZHNpMjgiLCJhIjoiY2p1bXU1Zmt0MGZpczQzbHRnZW56MzE4NCJ9.o5aqw6Ab-Bk1t4D4AfJEYQ';
 
-var map = new mapboxgl.Map({
+let map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/light-v9',
-  center: [-96, 37.8],
-  zoom: 3
+  center: post.coordinates,
+  zoom: 5
 });
 
-var geojson = {
+let geojson = {
   type: 'FeatureCollection',
   features: [{
     type: 'Feature',
     geometry: {
       type: 'Point',
-      coordinates: [-77.032, 38.913]
+      coordinates: post.coordinates
     },
     properties: {
       title: 'Mapbox',
       description: 'Washington, D.C.'
     }
-  },
-  {
-    type: 'Feature',
-    geometry: {
-      type: 'Point',
-      coordinates: [-122.414, 37.776]
-    },
-    properties: {
-      title: 'Mapbox',
-      description: 'San Francisco, California'
-    }
   }]
 };
 
 // add markers to map
-geojson.features.forEach(function(marker) {
-
   // create a HTML element for each feature
-  var el = document.createElement('div');
+  let el = document.createElement('div');
   el.className = 'marker';
-
   // make a marker for each feature and add to the map
   new mapboxgl.Marker(el)
-  .setLngLat(marker.geometry.coordinates)
+  .setLngLat(post.coordinates)
   .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-  .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+  .setHTML('<h3>' + post.title + '</h3><p>' + post.desc + '</p>'))
   .addTo(map);
-});
-
 </script>
