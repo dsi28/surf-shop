@@ -47,13 +47,42 @@ module.exports =  {
 
     //Post update
     async postUpdate(req,res,next){
-        let post = await Post.findByIdAndUpdate(req.params.id, req.body.post);
+        let post = await Post.findById(req.params.id);
+        if(req.body.deleteImages && req.body.deleteImages.length){
+            let deletedImages = req.body.deleteImages;
+            for (const public_id of deletedImages) {
+                await cloudinary.v2.uploader.destroy(public_id);
+                post.images = post.images.filter((image)=>{
+                    return image.public_id != public_id;
+                });
+            }
+        }
+        if(req.files){
+            for (const file of req.files) {
+                let image = await cloudinary.v2.uploader.upload(file.path);
+                post.images.push({
+                    url: image.secure_url,
+                    public_id: image.public_id
+                });
+            }
+        }
+        post.title = req.body.post.title;
+        post.desc = req.body.post.desc;
+        post.price = req.body.post.price;
+        post.location = req.body.post.location;
+        post.save();
         res.redirect(`/posts/${post.id}`);
     },
 
     //Post delete
     async postDelete(req,res,next){
-        await Post.findByIdAndDelete(req.params.id);
+        let post = await Post.findById(req.params.id);
+        if(post.images && post.images.length){
+            for (const image of post.images) {
+                await cloudinary.v2.uploader.destroy(image.public_id);
+            }
+        }
+        await post.remove();
         res.redirect('/posts');
     }
 }

@@ -1,29 +1,29 @@
-<form action='/posts/<%=post.id%>?_method=PUT' method='POST' id='postEditForm'>
+<form action='/posts/<%=post.id%>?_method=PUT' method='POST' id='postEditForm' enctype='multipart/form-data'>
     <div>
-        <label for='title'></label>
-        <input type='text' name='title' id='post[title]' value='<%=post.title%>'>
+        <label for='title'>Title</label>
+        <input type='text' name='post[title]' id='post[title]' value='<%=post.title%>'>
     </div>
     <div>
-        <label for='price'></label>
+        <label for='price'>Price</label>
         <input type='text' name='post[price]' id='price' value='<%=post.price%>'>
     </div>
     <div>
         <label for='images'>Image</label>
         <input type='file' accept='images/*' name='images' id='imageUpload' multiple>
         <div>
-        <%post.images.forEach((image, i)=>{%>
-            <img src='<%=image.url%>' width='100px'>
-            <label for='image<%=i%>'>Delete</label>
-            <input type='checkbox' id='image<%=i%>' name='deleteImage' class='imageDeleteCheckbox' value='<%=image.url%>'>
-        <%})%>
+            <%post.images.forEach((image, i)=>{%>
+                <img src='<%=image.url%>' width='100px'>
+                <label for='image<%=i%>'>Delete</label>
+                <input type='checkbox' id='image<%=i%>' name='deleteImages[]' class='imageDeleteCheckbox' value='<%=image.public_id%>'>
+            <%})%>
         </div>
     </div>
     <div>
-        <label for='desc'></label>
+        <label for='desc'>Description</label>
         <textarea type='text' name='post[desc]' id='desc'><%=post.desc%></textarea>
     </div>
     <div>
-        <label for='loc'></label>
+        <label for='loc'>Location</label>
         <input type='text' name='post[location]' id='loc' value='<%=post.location%>'>
     </div>
     <input type='submit' value='submit'>
@@ -41,11 +41,10 @@
             //length of images to be deleted
             let imgDeletions = document.querySelectorAll('.imageDeleteCheckbox:checked').length;
             let newTotal  = existingImgs - imgDeletions +imageUpload;
-            alert(newTotal);
             if(newTotal >4){
                 event.preventDefault();
                 let showTotal = newTotal-4;
-                alert(`You need to remove atleast ${showTotal} image${showTotal == 1 ? '': 's'}`);
+                alert(`You need to remove atleast ${showTotal} (more) image${showTotal == 1 ? '': 's'}`);
             }
         });
 
