@@ -26,7 +26,21 @@
 	<h2>Create a Review</h2>
 	<form action='/posts/<%= post.id %>/reviews' method='POST'>
 		<textarea name='review[body]' id='' required></textarea>
-		<input type='number' name='review[rating]' min='1' max='5' step='1' required>
+		<fieldset class="starability-basic">
+			<legend>First rating:</legend>
+			<button class='clear-rating' type='button'>Clear Rating</button>
+			<input type="radio" id="rate0" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+			<input type="radio" id="rate1" name="review[rating]" value="1" />
+			<label for="rate1" title="Terrible">1 star</label>
+			<input type="radio" id="rate2" name="review[rating]" value="2" />
+			<label for="rate2" title="Not good">2 stars</label>
+			<input type="radio" id="rate3" name="review[rating]" value="3" />
+			<label for="rate3" title="Average">3 stars</label>
+			<input type="radio" id="rate4" name="review[rating]" value="4" />
+			<label for="rate4" title="Very good">4 stars</label>
+			<input type="radio" id="rate5" name="review[rating]" value="5" />
+			<label for="rate5" title="Amazing">5 stars</label>
+		</fieldset>
 		<input type='submit' value='create'>
 	</form>
 </div>
@@ -43,9 +57,26 @@
 			<button class='toggle-edit-form'>Edit</button>
 			<form action='/posts/<%= post.id %>/reviews/<%=review._id%>?_method=PUT' method='POST' class='edit-review-form' hidden>
 				<textarea name='review[body]' id='' required><%=review.body%></textarea>
-				<input type='number' name='review[rating]' min='1' max='5' step='1' value='<%=review.rating%>' required>
-				<input type='submit' value='Update'>
+			<fieldset class="starability-basic">
+				<legend>Rating:</legend>
+				<button class='clear-rating' type='button'>Clear Rating</button>
+				<input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="0" checked aria-label="No rating." />
+				<input type="radio" id="second-rate1" name="review[rating]" value="1" />
+				<label for="second-rate1" title="Terrible">1 star</label>
+				<input type="radio" id="second-rate2" name="review[rating]" value="2" />
+				<label for="second-rate2" title="Not good">2 stars</label>
+				<input type="radio" id="second-rate3" name="review[rating]" value="3" />
+				<label for="second-rate3" title="Average">3 stars</label>
+				<input type="radio" id="second-rate4" name="review[rating]" value="4" />
+				<label for="second-rate4" title="Very good">4 stars</label>
+				<input type="radio" id="second-rate5" name="review[rating]" value="5" />
+				<label for="second-rate5" title="Amazing">5 stars</label>
+			</fieldset>			
+			<input type='submit' value='Update'>
 			</form>
+			<script>
+				$('#second-rate<%=review.rating%>').prop('checked', true);
+			</script>
 			<form action='/posts/<%= post.id %>/reviews/<%=review._id%>?_method=DELETE' method='POST' class='delete-review-form'>
 				<input type='submit' value='Delete'>
 			</form>

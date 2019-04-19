@@ -44,3 +44,6 @@ let geojson = {
     $(this).siblings('.delete-review-form').toggle();
 	});
 
+$('.clear-rating').click(function(){
+  $(this).siblings('.input-no-rate').click();
+});
