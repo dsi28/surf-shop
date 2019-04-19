@@ -13,9 +13,7 @@ router = express.Router({mergeParams: true}),
 router.post('/', asyncErrorHandler(reviewCreate));
 
 /* POST reviews update. */
-router.put('/:review_id', (req,res,next)=>{
-    res.send('/posts/:id/reviews'+req.params.review_id+ ' updates');
-});
+router.put('/:review_id', asyncErrorHandler(reviewUpdate));
 
 /* DELETE reviews delete. */
 router.delete('/:review_id', (req,res,next)=>{

@@ -31,3 +31,15 @@ let geojson = {
   .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
   .setHTML('<h3>' + post.title + '</h3><p>' + post.desc + '</p>'))
   .addTo(map);
+
+
+  //toggle review form edit update
+	$('.toggle-edit-form').on('click', function(){
+		if($(this).text() == 'Edit'){
+			$(this).text('Cancel');
+		}else{
+			$(this).text('Edit');
+		} 
+		$(this).siblings('.edit-review-form').toggle();
+	});
+

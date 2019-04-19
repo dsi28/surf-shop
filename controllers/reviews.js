@@ -18,7 +18,8 @@ module.exports =  {
 
     //Review update
     async reviewUpdate(req,res,next){
-
+        await Review.findByIdAndUpdate(req.params.review_id, req.body.review);
+        res.redirect(`/posts/${req.params.id}`);
     },
 
     //Review delete
