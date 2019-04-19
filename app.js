@@ -60,6 +60,15 @@ passport.deserializeUser(User.deserializeUser());
 
 //set local variable middleware
 app.use(function(req,res,next){
+  //set user while app is in dev stages.
+  req.user = {
+    '_id' : '5cba0db661e67e39887cb3e9',
+    'username' : '1',
+  }
+  res.locals.currentUser = req.user;
+  //end set user
+  
+  //set default view title
   res.locals.title ='Surf Shop';
   next();
 });
