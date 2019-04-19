@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=title%></title>
+    <link rel='stylesheet' href='/stylesheets/post-show.css' />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet' />
+  </head>
+  <body>
+    <% include ../partials/navbar %>
+    <%- body -%>
+    <script>
+        let post = <%-JSON.stringify(post)%>;
+        let mapbox_key = '<%-MAPBOX_API_KEY%>';
+    </script>
+    <script src='/javascripts/post-show.js'></script>
+  </body>
+</html>

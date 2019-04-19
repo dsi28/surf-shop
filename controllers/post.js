@@ -43,7 +43,7 @@ module.exports =  {
     //Posts show
     async postShow(req,res,next){
         let post = await Post.findById(req.params.id);
-        res.render('posts/show', {post:  post});
+        res.render('posts/show', {post:  post, MAPBOX_API_KEY : process.env.MAPBOX_MAIN_TOKEN});
     },
 
     //Post edit
