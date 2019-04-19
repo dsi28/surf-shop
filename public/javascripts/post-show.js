@@ -40,6 +40,7 @@ let geojson = {
 		}else{
 			$(this).text('Edit');
 		} 
-		$(this).siblings('.edit-review-form').toggle();
+    $(this).siblings('.edit-review-form').toggle();
+    $(this).siblings('.delete-review-form').toggle();
 	});
 

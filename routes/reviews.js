@@ -16,7 +16,6 @@ router.post('/', asyncErrorHandler(reviewCreate));
 router.put('/:review_id', asyncErrorHandler(isReviewAuthor), asyncErrorHandler(reviewUpdate));
 
 /* DELETE reviews delete. */
-router.delete('/:review_id', (req,res,next)=>{
-    res.send('/posts/:id/reviews'+req.params.review_id + ' delete');
-});
+router.delete('/:review_id', asyncErrorHandler(isReviewAuthor), asyncErrorHandler(reviewDelete));
+
 module.exports = router;
