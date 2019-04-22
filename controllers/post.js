@@ -58,7 +58,11 @@ module.exports =  {
                 model: 'User'
             }
         });
-        res.render('posts/show', {post:  post, MAPBOX_API_KEY : process.env.MAPBOX_MAIN_TOKEN});
+        const floorRating = post.calculateAvgRating();
+        res.render('posts/show', {
+            post:  post, 
+            MAPBOX_API_KEY : process.env.MAPBOX_MAIN_TOKEN,
+            floorRating});
     },
 
     //Post edit

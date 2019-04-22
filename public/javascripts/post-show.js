@@ -6,20 +6,6 @@ let map = new mapboxgl.Map({
   zoom: 5
 });
 
-let geojson = {
-  type: 'FeatureCollection',
-  features: [{
-    type: 'Feature',
-    geometry: {
-      type: 'Point',
-      coordinates: post.coordinates
-    },
-    properties: {
-      title: 'Mapbox',
-      description: 'Washington, D.C.'
-    }
-  }]
-};
 
 // add markers to map
   // create a HTML element for each feature
