@@ -7,6 +7,8 @@ cookieParser = require('cookie-parser'),
 logger = require('morgan'),
 mongoose = require('mongoose'),
 methodOverride = require('method-override'),
+//require seeds.js seedsPost file
+seedsPosts = require('./seeds'),
 //routes
 indexRouter = require('./routes/index'),
 postRouter = require('./routes/post'),
@@ -18,6 +20,8 @@ passport = require('passport'),
 //session
 session = require('express-session'),
 app = express();
+// //call seeds function
+// seedsPosts();
 
 //db conncetion
 mongoose.connect('mongodb://localhost/surf-shop', { useNewUrlParser: true }); //changed db url from surf-shop to surf-shop-mapbox while in mapbox branch

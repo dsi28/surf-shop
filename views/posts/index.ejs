@@ -1,11 +1,14 @@
 <% layout('layouts/boilerplate') -%>
 <h1>Post Index</h1>
 <a href='/posts/new'>New Post</a>
-<%posts.forEach((post)=>{%>
+
+ <% include ../partials/paginatePosts %>
+<%posts.docs.forEach((post)=>{%>
     <h1><%=post.title%></h1>
     <p><%=post.desc%></p>
     <p><%=post.price%></p>
     <p><%=post.location%></p>
-    <a href='/posts/<%=post.id%>'>show<a>
+    <a href='/posts/<%=post.id%>'>show</a>
     <hr>
 <%})%>
+ <% include ../partials/paginatePosts %>

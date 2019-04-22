@@ -12,7 +12,14 @@ module.exports =  {
     
     //Posts index
     postIndex: async (req,res,next)=>{
-        let posts = await Post.find({});
+        //gets all post without paginate
+        //let posts = await Post.find({});
+
+        //gets postss with paginate
+        let posts = await Post.paginate({}, {
+            page: req.query.page || 1,
+            limit: 10
+        });
         res.render('posts/index', {posts: posts});    
     },
 
