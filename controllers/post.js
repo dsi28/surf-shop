@@ -1,12 +1,7 @@
 const Post = require('../models/post'),
+ {cloudinary} = require('../cloudinary'),
 mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding'),
-geocodingClient = mbxGeocoding({ accessToken: process.env.MAPBOX_SURF_SHOP_TOKEN }),
-cloudinary = require('cloudinary');
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUDNAME,
-    api_key: process.env.CLOUDINARY_APIKEY,
-    api_secret: process.env.CLOUDINARY_SECRET
-});
+geocodingClient = mbxGeocoding({ accessToken: process.env.MAPBOX_SURF_SHOP_TOKEN });
 
 module.exports =  {
     
@@ -18,9 +13,10 @@ module.exports =  {
         //gets postss with paginate
         let posts = await Post.paginate({}, {
             page: req.query.page || 1,
-            limit: 10
+            limit: 10,
+            sort: {'_id': -1}
         });
-        res.render('posts/index', {posts: posts});    
+        res.render('posts/index', {posts: posts, mapBoxToken: process.env.MAPBOX_MAIN_TOKEN});    
     },
 
     //Post new
@@ -32,18 +28,19 @@ module.exports =  {
     async postCreate (req,res,next){
         req.body.post.images=[];
         for (const file of req.files) {
-            let image = await cloudinary.v2.uploader.upload(file.path);
             req.body.post.images.push({
-                url: image.secure_url,
-                public_id: image.public_id
+                url: file.secure_url,
+                public_id: file.public_id
             });
         }
         const response = await geocodingClient.forwardGeocode({ 
             query: req.body.post.location,
             limit: 1
         }).send();
-        req.body.post.coordinates = response.body.features[0].geometry.coordinates;
-        let post = await Post.create(req.body.post);
+        req.body.post.geometry = response.body.features[0].geometry;
+        let post = new Post(req.body.post);
+		post.properties.description = `<strong><a href="/posts/${post._id}">${post.title}</a></strong><p>${post.location}</p><p>${post.desc.substring(0, 20)}...</p>`;
+		post.save();
         res.redirect(`/posts/${post.id}`);
     },
 
@@ -85,10 +82,9 @@ module.exports =  {
         }
         if(req.files){
             for (const file of req.files) {
-                let image = await cloudinary.v2.uploader.upload(file.path);
                 post.images.push({
-                    url: image.secure_url,
-                    public_id: image.public_id
+                    url: file.secure_url,
+                    public_id: file.public_id
                 });
             }
         }
@@ -98,12 +94,13 @@ module.exports =  {
                 query: req.body.post.location,
                 limit: 1
             }).send();
-            post.coordinates = response.body.features[0].geometry.coordinates;
+            post.geometry = response.body.features[0].geometry;
             post.location = req.body.post.location;
         }
         post.title = req.body.post.title;
         post.desc = req.body.post.desc;
         post.price = req.body.post.price;
+        post.properties.description = `<strong><a href="/posts/${post._id}">${post.title}</a></strong><p>${post.location}</p><p>${post.desc.substring(0, 20)}...</p>`;
         post.save();
         res.redirect(`/posts/${post.id}`);
     },

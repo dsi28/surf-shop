@@ -2,7 +2,7 @@ mapboxgl.accessToken = mapbox_key;
 let map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/light-v9',
-  center: post.coordinates,
+  center: post.geometry.coordinates,
   zoom: 5
 });
 
@@ -13,7 +13,7 @@ let map = new mapboxgl.Map({
   el.className = 'marker';
   // make a marker for each feature and add to the map
   new mapboxgl.Marker(el)
-  .setLngLat(post.coordinates)
+  .setLngLat(post.geometry.coordinates)
   .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
   .setHTML('<h3>' + post.title + '</h3><p>' + post.desc + '</p>'))
   .addTo(map);

@@ -8,9 +8,20 @@ const PostSchema = new mongoose.Schema({
     desc: String,
     images: [ {url: String, public_id:String} ],
     location: String,
-    coordinates:Array,
-    lat: Number,
-    lng: Number,
+    geometry: {
+        type:{
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates:{
+            type: [Number],
+            required: true
+        }
+    },
+    properties:{
+        description: String
+    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

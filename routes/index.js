@@ -1,7 +1,10 @@
 const express = require('express'),
 router = express.Router(),
  { asyncErrorHandler } = require('../middleware'),
- { postRegister, postLogin, getLogout } = require('../controllers/index'); //this links the controllers/index.js file to this route file
+ { postRegister, 
+  postLogin, 
+  getLogout, 
+  langingPage} = require('../controllers/index'); //this links the controllers/index.js file to this route file
                                                       // any method from the controller file that is to be used here must be named inside of the { nameOfMethod }
 
 
@@ -9,9 +12,7 @@ router = express.Router(),
   //routes for : '/'
 
 /* GET home page. */
-router.get('/', (req, res, next) => {
-  res.render('index', { title: 'Surf Shop - Home' });
-});
+router.get('/', asyncErrorHandler(langingPage));
 
 /* GET register. */
 router.get('/register', (req, res, next) => {
