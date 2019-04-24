@@ -27,6 +27,7 @@
 	<% }); %>
 </div>
 <div id='map'></div>
+<% if(currentUser && post.author.equals(currentUser._id)){ %>
 <div>
 	<a href="/posts/<%= post.id %>/edit">
 		<button>Edit</button>
@@ -37,8 +38,9 @@
 		<input type="submit" value="Delete">
 	</form>
 </div>
+<%}%>
+<% if(currentUser){ %>
 <div>
-	
 	<h2>Create a Review</h2>
 	<form action='/posts/<%= post.id %>/reviews' method='POST'>
 		<textarea name='review[body]' id='' required></textarea>
@@ -60,6 +62,9 @@
 		<input type='submit' value='create'>
 	</form>
 </div>
+<%}else{%>
+	<h2><a href='/login?returnTo=true'>Create a Review</a></h2>
+<%}%>
 <div>
 	<h3>Review</h3>
 	<%post.reviews.forEach((review)=>{%>

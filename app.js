@@ -24,7 +24,9 @@ app = express();
 // seedsPosts();
 
 //db conncetion
-mongoose.connect('mongodb://localhost/surf-shop', { useNewUrlParser: true }); //changed db url from surf-shop to surf-shop-mapbox while in mapbox branch
+mongoose.connect('mongodb://localhost/surf-shop', { 
+  useNewUrlParser: true,
+  useCreateIndex: true }); //changed db url from surf-shop to surf-shop-mapbox while in mapbox branch
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', ()=>{
@@ -68,10 +70,10 @@ app.use(function(req,res,next){
     //1 : 5cba0db661e67e39887cb3e9
     //2 : 5cba24368575482fa4b8c44e
     //3 : 5cbdeef9dbc6d52870337e93 
-  req.user = {
-    '_id' : '5cba24368575482fa4b8c44e',
-    'username' : '2',
-  }
+  // req.user = {
+  //   '_id' : '5cba24368575482fa4b8c44e',
+  //   'username' : '2',
+  // }
   res.locals.currentUser = req.user;
   //end set user
   

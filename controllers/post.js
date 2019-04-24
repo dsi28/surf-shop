@@ -38,9 +38,10 @@ module.exports =  {
             limit: 1
         }).send();
         req.body.post.geometry = response.body.features[0].geometry;
+        req.body.post.author = req.user._id;
         let post = new Post(req.body.post);
 		post.properties.description = `<strong><a href="/posts/${post._id}">${post.title}</a></strong><p>${post.location}</p><p>${post.desc.substring(0, 20)}...</p>`;
-		post.save();
+		await post.save();
         res.redirect(`/posts/${post.id}`);
     },
 
@@ -63,14 +64,13 @@ module.exports =  {
     },
 
     //Post edit
-    async postEdit(req,res,next){
-        let post = await Post.findById(req.params.id);
-        res.render('posts/edit', {post: post});
+    postEdit(req,res,next){
+        res.render('posts/edit');
     },
 
     //Post update
     async postUpdate(req,res,next){
-        let post = await Post.findById(req.params.id);
+        const { post } = res.locals;
         if(req.body.deleteImages && req.body.deleteImages.length){
             let deletedImages = req.body.deleteImages;
             for (const public_id of deletedImages) {
@@ -101,13 +101,13 @@ module.exports =  {
         post.desc = req.body.post.desc;
         post.price = req.body.post.price;
         post.properties.description = `<strong><a href="/posts/${post._id}">${post.title}</a></strong><p>${post.location}</p><p>${post.desc.substring(0, 20)}...</p>`;
-        post.save();
+        await post.save();
         res.redirect(`/posts/${post.id}`);
     },
 
     //Post delete
     async postDelete(req,res,next){
-        let post = await Post.findById(req.params.id);
+        const {post} = res.locals;
         if(post.images && post.images.length){
             for (const image of post.images) {
                 await cloudinary.v2.uploader.destroy(image.public_id);

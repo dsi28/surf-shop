@@ -3,7 +3,9 @@ router = express.Router(),
 multer = require('multer'),
  {storage} = require('../cloudinary'),
   upload = multer({storage}),
- {asyncErrorHandler} = require('../middleware'),
+ {asyncErrorHandler,
+  isUserLoggedIn,
+  isPostAuthor} = require('../middleware'),
  {
     postIndex, 
     postNew, 
@@ -20,20 +22,20 @@ multer = require('multer'),
 router.get('/', asyncErrorHandler(postIndex));
 
 /* GET posts new. */
-router.get('/new', postNew);
+router.get('/new',isUserLoggedIn, postNew);
 
 /* POST posts create. *///images is the type of file and 4 is the max number of file uploads
-router.post('/', upload.array('images', 4), asyncErrorHandler(postCreate));
+router.post('/', isUserLoggedIn, upload.array('images', 4), asyncErrorHandler(postCreate));
 
 /* GET posts show. */ 
 router.get('/:id', asyncErrorHandler(postShow));
 
 /* GET posts edit. */
-router.get('/:id/edit', asyncErrorHandler(postEdit));
+router.get('/:id/edit', isUserLoggedIn, asyncErrorHandler(isPostAuthor), postEdit);
 
 /* POST posts update. */
-router.put('/:id', upload.array('images', 4), asyncErrorHandler(postUpdate));
+router.put('/:id', isUserLoggedIn, asyncErrorHandler(isPostAuthor), upload.array('images', 4), asyncErrorHandler(postUpdate));
 
 /* DELETE posts delete. */
-router.delete('/:id', asyncErrorHandler(postDelete));
+router.delete('/:id', isUserLoggedIn, asyncErrorHandler(isPostAuthor), asyncErrorHandler(postDelete));
 module.exports = router;
