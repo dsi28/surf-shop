@@ -1,14 +1,17 @@
 const express = require('express'),
 router = express.Router(),
  { asyncErrorHandler,
-  isUserLoggedIn } = require('../middleware'),
+  isUserLoggedIn,
+  isValidPassword,
+  changePassword } = require('../middleware'),
  { postRegister, 
   postLogin, 
   getLogout, 
   langingPage,
   getRegister,
   getLogin,
-  getProfile} = require('../controllers/index'); //this links the controllers/index.js file to this route file
+  getProfile,
+  updateProfile} = require('../controllers/index'); //this links the controllers/index.js file to this route file
                                                       // any method from the controller file that is to be used here must be named inside of the { nameOfMethod }
 
 
@@ -37,9 +40,11 @@ router.get('/logout', getLogout);
 router.get('/profile', isUserLoggedIn, asyncErrorHandler(getProfile));
 
 /* PUT profile. */
-router.put('/profile/:user_id', (req, res, next) => {
-  res.send('PUT profile');
-});
+router.put('/profile', 
+        isUserLoggedIn,
+        asyncErrorHandler(isValidPassword),
+        asyncErrorHandler(changePassword),
+        asyncErrorHandler(updateProfile));
 
 /* GET forgot-password. */
 router.get('/forgot', (req, res, next) => {

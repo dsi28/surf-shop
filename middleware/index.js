@@ -36,5 +36,38 @@ module.exports = {
             console.log('user is not post owner');
             res.redirect('back');
         }
+    }, 
+
+    isValidPassword: async(req,res,next)=>{
+        const {user} = await User.authenticate()(req.user.username, req.body.currentPassword);
+        if(user){
+            res.locals.user = user;
+            next();
+        }else{
+            console.log('Incorrect current password!');
+            return res.redirect('/profile');
+        }
+    },
+
+    changePassword: async(req,res,next)=>{
+        const { 
+            newPassword,
+            confirmPassword
+        } = req.body;
+        if(newPassword && !confirmPassword ||  !newPassword && confirmPassword){
+            console.log('missing password');
+            return res.redirect('/profile');
+        }else if(newPassword && confirmPassword ){
+            const {user} = res.locals;
+            if(newPassword === confirmPassword){
+                await user.setPassword(newPassword);
+                next();
+            }else{
+                console.log('passwords do not match');
+                return res.redirect('/profile');
+            }
+        }else{
+            next();
+        }
     }
 }

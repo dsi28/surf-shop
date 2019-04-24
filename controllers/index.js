@@ -1,7 +1,8 @@
 //this is the controller for the index routes
 const User = require('../models/user'),
 passport = require('passport'),
-Post = require('../models/post');
+Post = require('../models/post'),
+util = require('util');
 
 //this makes is to that everything inside the object will be exported.
 module.exports = {
@@ -53,7 +54,11 @@ module.exports = {
     async postLogin(req,res,next){
         const {username, password} = req.body;
         const {user, err} = await User.authenticate()(username, password);
-        if(!user && err){
+        if(!user){
+            console.log('password or user incorrect');
+            return res.redirect('/login');
+        }
+        if(err){
             console.log(err);
             return next(err);
         }else{
@@ -83,5 +88,24 @@ module.exports = {
                     .limit(10)
                     .exec();
         res.render('profile', {posts});
+    },
+
+    async updateProfile(req,res,next){
+        const {
+            email,
+            username
+        } = req.body,
+        {user} = res.locals;
+        if(username){
+            user.username = username;
+        }
+        if(email){
+            user.email = email;
+        }
+        await user.save();
+        const login = util.promisify(req.login.bind(req));
+        await login(user);
+        console.log('profile has been updated');
+        next();
     }
 }
