@@ -1,5 +1,8 @@
 const express = require('express'),
 router = express.Router(),
+multer = require('multer'),
+ {storage} = require('../cloudinary'),
+upload = multer({storage}),
  { asyncErrorHandler,
   isUserLoggedIn,
   isValidPassword,
@@ -11,7 +14,11 @@ router = express.Router(),
   getRegister,
   getLogin,
   getProfile,
-  updateProfile} = require('../controllers/index'); //this links the controllers/index.js file to this route file
+  updateProfile,
+  getForgotPw,
+  putForgotPassword,
+  getReset,
+  putReset} = require('../controllers/index'); //this links the controllers/index.js file to this route file
                                                       // any method from the controller file that is to be used here must be named inside of the { nameOfMethod }
 
 
@@ -25,7 +32,7 @@ router.get('/', asyncErrorHandler(langingPage));
 router.get('/register', getRegister);
 
 /* POST register. */
-router.post('/register', asyncErrorHandler(postRegister));
+router.post('/register', upload.single('image'), asyncErrorHandler(postRegister));
 
 /* GET login. */
 router.get('/login', getLogin);
@@ -42,28 +49,21 @@ router.get('/profile', isUserLoggedIn, asyncErrorHandler(getProfile));
 /* PUT profile. */
 router.put('/profile', 
         isUserLoggedIn,
+        upload.single('image'),
         asyncErrorHandler(isValidPassword),
         asyncErrorHandler(changePassword),
         asyncErrorHandler(updateProfile));
 
 /* GET forgot-password. */
-router.get('/forgot', (req, res, next) => {
-  res.send('GET forgot');
-});
+router.get('/forgot-password', getForgotPw);
 
 /* PUT forgot-password. //addes token to user */
-router.put('/forgot', (req, res, next) => {
-  res.send('PUT forgot');
-});
+router.put('/forgot-password', asyncErrorHandler(putForgotPassword));
 
 /* GET reset-password. */
-router.get('/reset/:token', (req, res, next) => {
-  res.send('GET reset/:token');
-});
+router.get('/reset/:token', asyncErrorHandler(getReset));
 
 /* PUT reset-password. //addes token to user */
-router.put('/reset/:token', (req, res, next) => {
-  res.send('PUT reset/:token');
-});
+router.put('/reset/:token', asyncErrorHandler(putReset));
 
 module.exports = router;

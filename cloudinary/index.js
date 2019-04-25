@@ -13,7 +13,7 @@ const storage = cloudinaryStorage({
     filename: function (req, file, cb) {
         let buf = crypto.randomBytes(16);
         buf = buf.toString('hex');
-        let uniqFileName = file.originalname.replace(/\.jpeg|\.jpg|\.png/ig, '');
+        let uniqFileName = file.originalname.replace(/\.jpeg|\.webp|\.jpg|\.png/ig, '');
         uniqFileName += buf;
       cb(undefined, uniqFileName );
     }
